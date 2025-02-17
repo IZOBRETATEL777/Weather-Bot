@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "grammy": "^1.35.0"
+    "drizzle-kit": "^0.30.4",
+    "drizzle-orm": "^0.39.3",
+    "grammy": "^1.35.0",
+    "locations": "^0.0.2",
+    "pg": "^8.13.3"
   }
 }
