@@ -1,49 +1,23 @@
-import { Context, Bot } from "grammy";
-import { db, locations } from "../db.js";
-import { eq } from "drizzle-orm";
+import { Bot, Context } from "grammy";
+import { Conversation, createConversation, type ConversationFlavor} from "@grammyjs/conversations";
 
-async function normalizeCity(city: string): Promise<string> {
-    try {
-        const response = await fetch(
-            `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${process.env.OPENWEATHER_API_KEY}`
-        );
-        if (!response.ok) throw new Error(`OpenWeather API request failed with status: ${response.status}`);
+async function askLocation(conversation: Conversation, ctx: Context) {
+    await ctx.reply('Please enter your location');
+    const { message } = await conversation.waitFor("message:text");
 
-        const data = await response.json();
-        if (data.length === 0) return city;
-
-        return `${data[0].name}, ${data[0].country}`;
-    } catch (error) {
-        console.error("Error normalizing city:", error);
-        return city;
+    if (!message.text) {
+        await ctx.reply('Please enter a valid location');
+        return;
     }
+
+    await ctx.reply(`You entered: ${message.text}`);
+    // TODO: Add DB logic to save location
 }
 
-// Function to register commands
-export function registerAddLocation(bot: Bot) {
-    bot.command("add_location", async (ctx: Context) => {
-        const userId = ctx.from?.id;
-        if (!userId) return;
+export function registerAddLocation(bot: Bot<ConversationFlavor<Context>>) {
+    bot.use(createConversation(askLocation));
 
-        ctx.reply("Please send your location or enter a city name.");
-    });
-
-    bot.on("message:text", async (ctx: Context) => {
-        const userId = ctx.from?.id;
-        if (!userId) return;
-
-        const city = await normalizeCity(ctx.message.text);
-
-        // Check if the location already exists for the user
-        const existingLocation = await db.select().from(locations).where(eq(locations.user_id, userId)).execute();
-
-        if (existingLocation.some((loc) => loc.city === city)) {
-            return ctx.reply(`Location "${city}" is already in your saved locations.`);
-        }
-
-        // Insert new location
-        await db.insert(locations).values({ user_id: userId, city }).execute();
-        ctx.reply(`Location "${city}" has been added to your saved locations.`);
+    bot.command("add_location", async (ctx) => {
+        await ctx.conversation.enter("askLocation");
     });
 }
-
