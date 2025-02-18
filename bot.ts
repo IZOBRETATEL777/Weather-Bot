@@ -1,8 +1,7 @@
 import { Bot, Context } from "grammy";
-import {conversations, type ConversationFlavor } from "@grammyjs/conversations";
+import { conversations, type ConversationFlavor } from "@grammyjs/conversations";
 import { registerAddLocation } from "./commands/addLocation.js";
 import { registerListLocations } from "./commands/listLocations.js";
-
 
 if (!Bun.env.BOT_TOKEN) {
     console.error("❌ BOT_TOKEN is not set in environment variables");
@@ -47,5 +46,23 @@ async function startBot() {
         process.exit(1);
     }
 }
+
+const server = Bun.serve({
+    port: Bun.env.PORT || 3000,
+    fetch(req) {
+        const url = new URL(req.url);
+
+        if (url.pathname === "/health") {
+            return new Response(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }), {
+                headers: { "Content-Type": "application/json" },
+                status: 200,
+            });
+        }
+
+        return new Response("Not Found", { status: 404 });
+    },
+});
+
+console.log(`🚀 Health check running on http://${Bun.env.HOST || '0.0.0.0'}:${server.port}/health`);
 
 startBot();
