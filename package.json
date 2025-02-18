@@ -2,6 +2,9 @@
   "name": "weather-bot",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun bot.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -9,7 +12,12 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "grammy": "^1.35.0"
+    "@grammyjs/conversations": "^2.0.1",
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.30.4",
+    "drizzle-orm": "^0.39.3",
+    "grammy": "^1.35.0",
+    "locations": "^0.0.2",
+    "pg": "^8.13.3"
   }
 }
