@@ -56,11 +56,11 @@ export function registerWeatherService(bot: Bot<ConversationFlavor<Context>>) {
     });
     console.log("🌤 Weather worker started, fetching data every 5 minutes...");
     setInterval(async () => {
-        await fetchWeather(bot);
+        await fetchWeather();
     }, 5 * 60 * 1000);
 }
 
-async function fetchWeather(bot: Bot<ConversationFlavor<Context>>) {
+export async function fetchWeather() {
     try {
         console.log("🌤 Fetching weather data...");
 
