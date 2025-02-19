@@ -1,36 +1,57 @@
 import { Bot, Context } from "grammy";
 import { Conversation, createConversation, type ConversationFlavor } from "@grammyjs/conversations";
+import { fetchWeather } from "./../weatherService.ts";
 import { db, locations } from "../db.ts";
 import { eq } from "drizzle-orm";
+
+async function fetchNormalizedCity(city: string) {
+    try {
+        const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${Bun.env.OPENWEATHER_API_KEY}`);
+        const geoData = await geoResponse.json();
+
+        if (!geoData.length) {
+            console.error(`❌ No geolocation data found for city: ${city}`);
+            return null;
+        }
+        
+        return `${geoData[0].name}, ${geoData[0].country}`;
+    } catch (error) {
+        console.error("❌ Error fetching geolocation data:", error);
+        return null;
+    }
+}
 
 // Function to store user location in the database
 async function saveLocation(userId: number, city: string) {
     try {
-        // ✅ Check if the location already exists for the user
-        const existingLocation = await db.select().from(locations).where(eq(locations.user_id, userId)).execute();
+        const normalizedCity = await fetchNormalizedCity(city);
+        if (!normalizedCity) {
+            return "invalid_city";
+        }
         
-        if (existingLocation.some((loc) => loc.city === city)) {
-            console.log(`ℹ️ Location "${city}" already exists for user ${userId}`);
+        const existingLocation = await db.select().from(locations).where(eq(locations.user_id, userId)).execute();
+        if (existingLocation.some((loc) => loc.city === normalizedCity)) {
+            console.log(`ℹ️ Location "${normalizedCity}" already exists for user ${userId}`);
             return "already_exists";
         }
 
-        // ✅ Insert the new location
-        await db.insert(locations).values({ user_id: userId, city }).execute();
-        console.log(`✅ Location "${city}" added for user ${userId}`);
+        await db.insert(locations).values({ user_id: userId, city: normalizedCity }).execute();
+        console.log(`✅ Location "${normalizedCity}" added for user ${userId}`);
+        await fetchWeather();
         return "success";
     } catch (error) {
         console.error("❌ Error saving location:", error);
-        return "error";``
+        return "error";
     }
 }
 
 // Conversation function to ask for location
 async function askLocation(conversation: Conversation, ctx: Context) {
-    await ctx.reply('Please enter your location');
+    await ctx.reply("Please enter your location");
     const { message } = await conversation.waitFor("message:text");
 
     if (!message.text) {
-        await ctx.reply('Please enter a valid location');
+        await ctx.reply("Please enter a valid location");
         return;
     }
 
@@ -41,11 +62,11 @@ async function askLocation(conversation: Conversation, ctx: Context) {
     }
 
     const city = message.text.trim();
-
-    // ✅ Save location to the database
     const result = await saveLocation(userId, city);
 
-    if (result === "already_exists") {
+    if (result === "invalid_city") {
+        await ctx.reply("❌ Unable to find a valid location. Please try again.");
+    } else if (result === "already_exists") {
         await ctx.reply(`ℹ️ Location "${city}" is already in your saved locations.`);
     } else if (result === "success") {
         await ctx.reply(`✅ Location "${city}" has been added to your saved locations.`);
