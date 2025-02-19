@@ -34,7 +34,8 @@ async function startBot() {
                 "👋 Welcome! I can help you manage your locations.\n\n" +
                 "Available commands:\n" +
                 "/add_location - Add a new location\n" +
-                "/list_locations - View your saved locations"
+                "/list_locations - View your saved locations\n" +
+                "/weather - Get the current weather for your saved locations"
             );
         });
 
