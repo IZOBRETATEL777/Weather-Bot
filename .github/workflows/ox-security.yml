@@ -1,4 +1,4 @@
-name: OX Security Scan
+name: "OX Security Scan"
 
 on:
   push:
