@@ -1,0 +1,5 @@
+# Scan with GitLeaks against secrets
+gitleaks git --verbose
+
+# Scan with ESLint against code quality
+bunx eslint .
