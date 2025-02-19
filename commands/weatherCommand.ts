@@ -42,7 +42,7 @@ export function registerWeatherCommand(bot: Bot<ConversationFlavor<Context>>) {
             return ctx.answerCallbackQuery({ text: `❌ No weather data available for ${city}.` });
         }
 
-        const { temperature, recorded_at } = weather[0];
+        const { temperature } = weather[0];
         await ctx.editMessageText(`🌤 Weather in ${city}:
 🌡 Temperature: ${temperature}°C`);
     });
