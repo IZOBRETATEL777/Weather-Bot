@@ -8,6 +8,7 @@
         "@types/pg": "^8.11.11",
         "drizzle-kit": "^0.30.4",
         "drizzle-orm": "^0.39.3",
+        "gitleaks": "^1.0.0",
         "grammy": "^1.35.0",
         "locations": "^0.0.2",
         "pg": "^8.13.3",
@@ -106,6 +107,8 @@
     "event-target-shim": ["event-target-shim@5.0.1", "", {}, "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ=="],
 
     "get-tsconfig": ["get-tsconfig@4.10.0", "", { "dependencies": { "resolve-pkg-maps": "^1.0.0" } }, "sha512-kGzZ3LWWQcGIAmg6iWvXn0ei6WDtV26wzHRMwDSzmAbcXrTEXxHy6IehI6/4eT6VRKyMP1eF1VqwrVUmE/LR7A=="],
+
+    "gitleaks": ["gitleaks@1.0.0", "", {}, "sha512-mTtKkWCAeHnTiBmRzjKnot8D8zX/JVDuRffuvSCr+z93vuBXygeifGZ7lXOB8Hjxto+DikSoF0XXfxntd1BZSQ=="],
 
     "grammy": ["grammy@1.35.0", "", { "dependencies": { "@grammyjs/types": "3.19.0", "abort-controller": "^3.0.0", "debug": "^4.3.4", "node-fetch": "^2.7.0" } }, "sha512-Qlu5kVaekL4w5clWSpQcRxwJJoEeU13g8DTALuNbZsDAJuFJNXBuI8EqR6U1m1of7j9NEMQz59sXu+0/KsKjyg=="],
 

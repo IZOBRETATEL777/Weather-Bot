@@ -9,5 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
-    - uses: pre-commit/action@v3.0.1
+    - name: Install dependencies
+      run: |
+        bun install
+    - name: Run Pre-Commit Hooks
+      run: |
+        bunx pre-commit run --all-files
+    - name: Run Gitleaks Secret Scan
+      run: |
+        bunx gitleaks detect --verbose --redact
