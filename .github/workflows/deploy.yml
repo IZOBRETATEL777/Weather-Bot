@@ -1,0 +1,17 @@
+name: Deploy to Production
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment Webhook
+        run: |
+          curl -X $WEBHOOK_SECRET
+        env:
+          WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
