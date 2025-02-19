@@ -1,4 +1,4 @@
-name: Code Analysis
+name: OX Security Scan
 
 on:
   push:

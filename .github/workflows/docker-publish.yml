@@ -9,6 +9,8 @@ on:
 
 jobs:
   build-and-push:
+    needs: [analyze, security]
+
     runs-on: ubuntu-latest
 
     steps:
