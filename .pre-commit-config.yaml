@@ -17,7 +17,7 @@ repos:
     name: Detect hardcoded secrets
     description: Detect hardcoded secrets using Gitleaks
     entry: gitleaks git --pre-commit --redact --staged --verbose
-    language: ts
+    language: script
     pass_filenames: false
   - id: gitleaks-docker
     name: Detect hardcoded secrets
