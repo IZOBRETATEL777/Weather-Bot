@@ -2,6 +2,7 @@ import { Bot, Context } from "grammy";
 import { conversations, type ConversationFlavor } from "@grammyjs/conversations";
 import { registerAddLocation } from "./commands/addLocation.js";
 import { registerListLocations } from "./commands/listLocations.js";
+import { registerWeatherCommand } from "./commands/weatherCommand.js";
 import { registerWeatherService } from "./weatherService.js";
 
 if (!Bun.env.BOT_TOKEN) {
@@ -26,8 +27,8 @@ async function startBot() {
         registerAddLocation(bot);
         registerListLocations(bot);
         registerWeatherService(bot);
+        registerWeatherCommand(bot);
 
-        // Basic commands
         bot.command("start", async (ctx) => {
             await ctx.reply(
                 "👋 Welcome! I can help you manage your locations.\n\n" +
