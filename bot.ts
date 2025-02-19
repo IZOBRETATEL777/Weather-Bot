@@ -2,6 +2,7 @@ import { Bot, Context } from "grammy";
 import { conversations, type ConversationFlavor } from "@grammyjs/conversations";
 import { registerAddLocation } from "./commands/addLocation.js";
 import { registerListLocations } from "./commands/listLocations.js";
+import { registerWeatherService } from "./weatherService.js";
 
 if (!Bun.env.BOT_TOKEN) {
     console.error("❌ BOT_TOKEN is not set in environment variables");
@@ -24,6 +25,7 @@ async function startBot() {
         console.log("✅ Registering commands...");
         registerAddLocation(bot);
         registerListLocations(bot);
+        registerWeatherService(bot);
 
         // Basic commands
         bot.command("start", async (ctx) => {
