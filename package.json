@@ -3,10 +3,12 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun bot.ts"
+    "start": "bun bot.ts",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "gitleaks": "^1.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -16,10 +18,9 @@
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.4",
     "drizzle-orm": "^0.39.3",
-    "gitleaks": "^1.0.0",
     "grammy": "^1.35.0",
+    "husky": "^9.1.7",
     "locations": "^0.0.2",
-    "pg": "^8.13.3",
-    "pre-commit": "^1.2.2"
+    "pg": "^8.13.3"
   }
 }
