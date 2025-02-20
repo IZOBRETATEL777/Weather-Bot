@@ -31,7 +31,7 @@ async function startBot() {
 
         bot.command("start", async (ctx) => {
             await ctx.reply(
-                "👋 Welcome! I can help you manage your locations.\n\n" +
+                "👋 Welcome! I can help you to check weather in your locations!\n\n" +
                 "Available commands:\n" +
                 "/add_location - Add a new location\n" +
                 "/list_locations - View your saved locations\n" +
