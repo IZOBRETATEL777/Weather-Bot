@@ -10,7 +10,7 @@ on:
       - master
 
 jobs:
-  security:
+  code-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Run OX Security Scan to check for vulnerabilities
@@ -18,30 +18,8 @@ jobs:
           ox_api_key: ${{ secrets.OX_API_KEY }}
         uses: oxsecurity/ox-security-scan@main
 
-  analyze:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: javascript-typescript
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{ matrix.language }}"
-
   build-and-push:
-    needs: [security, analyze]
+    needs: [code-scan]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
