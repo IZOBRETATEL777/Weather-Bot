@@ -37,6 +37,7 @@ async function startBot() {
                 "Available commands:\n" +
                 "/add_location - Add a new location\n" +
                 "/list_locations - View your saved locations\n" +
+                "/remove_location - Remove a location\n" +
                 "/weather - Get the current weather for your saved locations"
             );
         });
