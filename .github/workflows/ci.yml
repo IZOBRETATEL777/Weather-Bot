@@ -1,16 +1,27 @@
-name: Build and Publish Docker Image
+name: CI Pipeline
 
 on:
   push:
     branches:
       - master
-  release:
-    types: [published]
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - master
 
 jobs:
-  build-and-push:
+  code-scan:
     runs-on: ubuntu-latest
+    steps:
+      - name: Run OX Security Scan to check for vulnerabilities
+        with:
+          ox_api_key: ${{ secrets.OX_API_KEY }}
+        uses: oxsecurity/ox-security-scan@main
 
+  build-and-push:
+    needs: [code-scan]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

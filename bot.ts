@@ -3,6 +3,7 @@ import { conversations, type ConversationFlavor } from "@grammyjs/conversations"
 import { registerAddLocation } from "./commands/addLocation.js";
 import { registerListLocations } from "./commands/listLocations.js";
 import { registerWeatherCommand } from "./commands/weatherCommand.js";
+import { registerRemoveLocation } from "./commands/removeLocation.js";
 import { registerWeatherService } from "./weatherService.js";
 
 if (!Bun.env.BOT_TOKEN) {
@@ -28,13 +29,15 @@ async function startBot() {
         registerListLocations(bot);
         registerWeatherService(bot);
         registerWeatherCommand(bot);
+        registerRemoveLocation(bot);
 
         bot.command("start", async (ctx) => {
             await ctx.reply(
-                "👋 Welcome! I can help you manage your locations.\n\n" +
+                "👋 Welcome! I can help you to check weather in your locations!\n\n" +
                 "Available commands:\n" +
                 "/add_location - Add a new location\n" +
-                "/list_locations - View your saved locations"
+                "/list_locations - View your saved locations\n" +
+                "/weather - Get the current weather for your saved locations"
             );
         });
 
