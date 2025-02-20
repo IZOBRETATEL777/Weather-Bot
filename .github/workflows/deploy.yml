@@ -31,7 +31,8 @@ jobs:
         run: |
             bunx --bun drizzle-kit generate
             bunx --bun drizzle-kit migrate
-
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       # - name: Trigger Deployment Webhook
       #   run: |
