@@ -13,6 +13,6 @@ jobs:
     steps:
       - name: Trigger Deployment Webhook
         run: |
-          curl $RENDER_WEBHOOK_DEPLOY
+          curl $WEBHOOK_SECRET
         env:
           WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
