@@ -40,6 +40,7 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
+          verbosity: "debug"
 
   build-and-push:
     needs: [security, analyze]
