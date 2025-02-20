@@ -1,5 +1,5 @@
 import { Bot, Context } from "grammy";
-import { db, locations } from "../db.ts";
+import { db, locations, weatherData } from "../db.ts";
 import { and, eq } from "drizzle-orm";
 import { InlineKeyboard } from "grammy";
 import type { ConversationFlavor } from "@grammyjs/conversations";
@@ -45,12 +45,38 @@ export function registerRemoveLocation(bot: Bot<ConversationFlavor<Context>>) {
     });
 
     bot.callbackQuery(/^confirm_remove_(.+)/, async (ctx) => {
-        const city = ctx.match[1];
+        const city = ctx.match?.[1]?.trim();
         const userId = ctx.from?.id;
-        if (!userId) return;
-
-        // Delete the location
-        await db.delete(locations).where(and(eq(locations.user_id, userId), eq(locations.city, city))).execute();
+        
+        if (!city || !userId) {
+            console.error("Missing city or userId");
+            return;
+        }
+        
+        const locationId = await db
+            .select({ id: locations.id })
+            .from(locations)
+            .where(and(eq(locations.user_id, userId), eq(locations.city, city)))
+            .execute()
+            .then((rows) => rows[0]?.id);
+        
+        if (!locationId) {
+            console.log(`No location found for city: ${city} and userId: ${userId}`);
+            return;
+        }
+        
+        await db.delete(weatherData)
+            .where(eq(weatherData.location_id, locationId))
+            .execute()
+            .catch((err) => console.error("Error deleting weather data:", err));
+        
+        await db.delete(locations)
+            .where(eq(locations.id, locationId))
+            .execute()
+            .catch((err) => console.error("Error deleting location:", err));
+        
+        console.log(`Successfully deleted location ${locationId} and related weather data`);
+        
 
         await ctx.editMessageText(`✅ Location "${city}" has been removed.`);
     });
