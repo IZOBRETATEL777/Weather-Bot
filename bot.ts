@@ -3,6 +3,7 @@ import { conversations, type ConversationFlavor } from "@grammyjs/conversations"
 import { registerAddLocation } from "./commands/addLocation.js";
 import { registerListLocations } from "./commands/listLocations.js";
 import { registerWeatherCommand } from "./commands/weatherCommand.js";
+import { registerRemoveLocation } from "./commands/removeLocation.js";
 import { registerWeatherService } from "./weatherService.js";
 
 if (!Bun.env.BOT_TOKEN) {
@@ -28,6 +29,7 @@ async function startBot() {
         registerListLocations(bot);
         registerWeatherService(bot);
         registerWeatherCommand(bot);
+        registerRemoveLocation(bot);
 
         bot.command("start", async (ctx) => {
             await ctx.reply(
