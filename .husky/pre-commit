@@ -1,5 +1,5 @@
 # Scan with GitLeaks against secrets
-gitleaks git --verbose
+gitleaks protect --staged --verbose
 
 # Scan with ESLint against code quality
 bunx eslint .
