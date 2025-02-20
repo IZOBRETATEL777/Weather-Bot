@@ -33,8 +33,8 @@ jobs:
             bunx --bun drizzle-kit migrate
 
 
-      - name: Trigger Deployment Webhook
-        run: |
-          curl $WEBHOOK_SECRET
-        env:
-          WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
+      # - name: Trigger Deployment Webhook
+      #   run: |
+      #     curl $WEBHOOK_SECRET
+      #   env:
+      #     WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
