@@ -1,18 +1,14 @@
 name: Deploy to Production
 
 on:
-  # push on any branch
-  push:
-    branches:
-      - '*'
-  # workflow_run:
-  #   workflows: ["CI Pipeline"]
-  #   types:
-  #     - completed
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
 jobs:
   deploy:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -26,16 +22,16 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-
-      - name: Migrate Database
+      - name: Migrate Database If Needed
         run: |
             bunx --bun drizzle-kit generate
             bunx --bun drizzle-kit migrate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        continue-on-error: true
 
-      # - name: Trigger Deployment Webhook
-      #   run: |
-      #     curl $WEBHOOK_SECRET
-      #   env:
-      #     WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
+      - name: Trigger Deployment Webhook
+        run: |
+          curl $WEBHOOK_SECRET
+        env:
+          WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
