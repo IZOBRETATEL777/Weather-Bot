@@ -8,10 +8,11 @@ on:
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Deployment Webhook
         run: |
-          curl -X $WEBHOOK_SECRET
+          curl -X $RENDER_WEBHOOK_DEPLOY
         env:
           WEBHOOK_SECRET: ${{ secrets.RENDER_WEBHOOK_DEPLOY }}
