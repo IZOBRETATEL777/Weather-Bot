@@ -103,7 +103,7 @@ Below are references to sequence diagrams illustrating the main flows. You can p
 
 ### 1. Add Location Sequence
 
-<!-- **Diagram Reference**: `images/AddLocationSequence.png`   -->
+![**Diagram Reference**](./images/AddLocationSequence.jpg "Hover tooltip text")
 
 <details>
 
@@ -324,6 +324,7 @@ In Render, you can set environment variables directly in the **Dashboard** under
 
 ```bash
 BOT_TOKEN="YOUR_TELEGRAM_BOT_TOKEN"
+OPENWEATHER_API_KEY="YOUR_OPENWEATHER_API_KEY"
 DATABASE_URL="YOUR_POSTGRESQL_CONNECTION_STRING"
 HOST="0.0.0.0"   # or your preferred host
 PORT="3000"      # or another port if needed
@@ -344,6 +345,13 @@ cd weather-alerts-bot
 
 ```bash
 bun install
+# Install Gitleaks (Linux/macOS)
+brew install gitleaks  # macOS (using Homebrew)
+sudo snap install gitleaks  # Linux (Snap package manager)
+
+# Install Gitleaks (Windows)
+scoop install gitleaks  # If using Scoop
+choco install gitleaks  # If using Chocolatey
 ```
 
 #### Configure Environment:
